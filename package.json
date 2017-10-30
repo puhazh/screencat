@@ -46,7 +46,7 @@
   },
   "homepage": "https://github.com/maxogden/screencat",
   "config": {
-    "server": "http://localhost:5005",
+    "server": "http://ec2-18-216-137-158.us-east-2.compute.amazonaws.com:3478",
     "rtcConfigUrl": "https://instant.io/rtcConfig",
     "browser": "http://cors.maxogden.com"
   }
