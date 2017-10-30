@@ -117,7 +117,11 @@ ui.buttons.share.addEventListener('click', function (e) {
         var source = sources[i]
         var opts = {
           constraints: {
-            audio: false,
+            audio: {
+              mandatory: {
+                chromeMediaSource: "system",
+              }
+            },
             video: {
               mandatory: {
                 chromeMediaSource: 'desktop',

@@ -4,17 +4,21 @@ var events = require('events')
 var SimplePeer = require('simple-peer')
 var nets = require('nets')
 var getUserMedia = require('./get-user-media.js')()
+var config = require('./package.json').config;
 
 module.exports = function create () {
-  var server = 'http://catlobby.maxogden.com'
-  // var server = 'http://localhost:5005'
-  var remoteConfigUrl = 'https://instant.io/rtcConfig'
-  if (process.browser) remoteConfigUrl = 'http://cors.maxogden.com/' + remoteConfigUrl
+  var server = config.server
+  var remoteConfigUrl = config.rtcConfigUrl
+  if (process.browser) remoteConfigUrl = config.browser + '/' + remoteConfigUrl
 
   var videoSize
 
   var defaultConstraints = {
-    audio: false,
+    audio: {
+      mandatory: {
+        chromeMediaSource: "system",
+      }
+    },
     video: {
       mandatory: {
         chromeMediaSource: 'screen',
@@ -158,7 +162,7 @@ module.exports = function create () {
         // screensharing
         getUserMedia(constraints, function (videoStream) {
           // audio
-          getUserMedia({audio: true, video: false}, function (audioStream) {
+          getUserMedia({audio: constraints.audio ? constraints.audio : true, video: false}, function (audioStream) {
             peer = new SimplePeer({ initiator: true, trickle: false, config: config })
             peer._pc.addStream(videoStream)
             peer._pc.addStream(audioStream)
